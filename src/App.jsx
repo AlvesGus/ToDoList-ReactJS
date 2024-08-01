@@ -1,6 +1,8 @@
 import { Check, Loader, Pencil, Plus, Trash, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { api } from './services/api'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   const [tasks, setTasks] = useState([])
@@ -31,7 +33,7 @@ export default function App() {
   async function addNewTask(e) {
     e.preventDefault()
     if(!task){
-      alert('Preencha todos os dados')
+      toast.info('Preencha todos os dados')
     }else{
       await api.post('tasks/new', {
         task,
@@ -40,7 +42,7 @@ export default function App() {
         setTask(''),
         setStatus(false),
         setPriority(false),
-        alert('Tarefa Cadastrada'),
+        toast.success('Tarefa Cadastrada'),
         setIsModalOpen(false)
       )
     }
@@ -49,7 +51,7 @@ export default function App() {
                         
   async function deleteTask(taskId){
     await api.delete(`/tasks/${taskId}/delete`).then(
-      alert('Tarefa excluída com sucesso'),
+      toast.success('Tarefa excluída com sucesso'),
     )
     window.document.location.reload()
   }
@@ -73,6 +75,7 @@ export default function App() {
   }
 
   return (
+    <><ToastContainer />
     <div className="w-full h-screen relative">
       <div className="max-w-[1024px] m-auto pt-24">
         <div className="flex items-center justify-between">
@@ -222,5 +225,6 @@ export default function App() {
       
 
     </div>
+    </>
   )
 }
